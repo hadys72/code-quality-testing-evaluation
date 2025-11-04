@@ -1,39 +1,38 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+// packages/frontend/src/hooks/useAuth.js
+import React from 'react';
 
-export const useAuth = () => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
+/**
+ * Hook personnalisé useAuth :
+ * Gère l'authentification de l'utilisateur (connexion, déconnexion, persistance).
+ */
+export function useAuth() {
+  // ✅ Initialise directement l'utilisateur depuis le localStorage (pas de setState dans un useEffect)
+  const [user, setUser] = React.useState(() => {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    return token && userData ? JSON.parse(userData) : null;
+  });
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    const userData = localStorage.getItem('user')
+  const [loading, setLoading] = React.useState(false);
 
-    if (token && userData) {
-      setUser(JSON.parse(userData))
-    }
-    setLoading(false)
-  }, [])
+  // Simple effet pour marquer le chargement terminé (peut servir à afficher un spinner)
+  React.useEffect(() => {
+    setLoading(false);
+  }, []);
 
+  // ✅ Connexion : enregistre les infos utilisateur dans le localStorage
   const login = (token, userData) => {
-    try {
-      localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(userData))
-      setUser(userData)
-    } catch (err) {
-      console.error('Failed to save auth data:', err)
-    }
-  }
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+  };
 
+  // ✅ Déconnexion : supprime les infos du localStorage
   const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setUser(null)
-    navigate('/login')
-  }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+  };
 
-  return { user, loading, login, logout }
+  return { user, loading, login, logout };
 }
-
-

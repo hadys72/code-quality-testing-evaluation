@@ -1,74 +1,82 @@
+// packages/frontend/src/utils/validation.js
+
+// Email simple et robuste pour l'app (évite les \[ \] et les faux positifs ESLint)
 export const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(email)
-}
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email || '').trim());
+};
 
 export const validatePassword = (password) => {
-  let errors = []
+  const errors = [];
+  const value = String(password || '');
 
-  if (password.length < 8) errors.push('Password must be at least 8 characters')
-  if (!/[A-Z]/.test(password)) errors.push('Password must contain uppercase')
-  if (!/[a-z]/.test(password)) errors.push('Password must contain lowercase')
-  if (!/[0-9]/.test(password)) errors.push('Password must contain number')
+  if (value.length < 8) errors.push('Password must be at least 8 characters');
+  if (!/[A-Z]/.test(value)) errors.push('Password must contain uppercase');
+  if (!/[a-z]/.test(value)) errors.push('Password must contain lowercase');
+  if (!/[0-9]/.test(value)) errors.push('Password must contain number');
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
+  };
+};
+
+export const validateUser = (user = {}) => {
+  const errors = {};
+
+  if (!user.firstname) errors.firstname = 'First name is required';
+  if (!user.lastname) errors.lastname = 'Last name is required';
+  if (!user.username) {
+    errors.username = 'Username is required';
+  } else if (user.username.length < 3) {
+    errors.username = 'Username too short';
   }
-}
 
-export const validateUser = (user) => {
-  const errors = {}
-
-  if (!user.firstname) errors.firstname = 'First name is required'
-  if (!user.lastname) errors.lastname = 'Last name is required'
-  if (!user.username) errors.username = 'Username is required'
-  if (user.username && user.username.length < 3) errors.username = 'Username too short'
-
-  if (user.password) {
-    const passwordValidation = validatePassword(user.password)
+  if (user.password != null) {
+    const passwordValidation = validatePassword(user.password);
     if (!passwordValidation.isValid) {
-      errors.password = passwordValidation.errors
+      errors.password = passwordValidation.errors;
     }
   } else {
-    errors.password = 'Password is required'
+    errors.password = 'Password is required';
   }
 
   return {
     isValid: Object.keys(errors).length === 0,
-    errors
-  }
-}
+    errors,
+  };
+};
 
-export const validateProduct = (product) => {
-  let valid = true
-  let errors = {}
+export const validateProduct = (product = {}) => {
+  let valid = true;
+  const errors = {};
 
-  if (!product.name || product.name.trim() === '') {
-    valid = false
-    errors.name = 'Name is required'
-  }
-
-  if (!product.price || isNaN(product.price)) {
-    valid = false
-    errors.price = 'Valid price is required'
+  // Name
+  const name = String(product.name || '').trim();
+  if (!name) {
+    valid = false;
+    errors.name = 'Name is required';
   }
 
-  if (product.price < 0) {
-    valid = false
-    errors.price = 'Price must be positive'
+  // Price (0 est valide)
+  const price = Number(product.price);
+  if (Number.isNaN(price)) {
+    valid = false;
+    errors.price = 'Valid price is required';
+  } else if (price < 0) {
+    valid = false;
+    errors.price = 'Price must be positive';
   }
 
-  if (!product.stock || isNaN(product.stock)) {
-    valid = false
-    errors.stock = ['Stock must be a number']
+  // Stock (0 est valide)
+  const stock = Number(product.stock);
+  if (Number.isNaN(stock)) {
+    valid = false;
+    errors.stock = ['Stock must be a number'];
+  } else if (stock < 0) {
+    valid = false;
+    errors.stock = ['Stock cannot be negative'];
   }
 
-  if (product.stock < 0) {
-    if (!errors.stock) errors.stock = []
-    errors.stock.push('Stock cannot be negative')
-  }
-
-  return { valid, errors }
-}
-
+  return { valid, errors };
+};

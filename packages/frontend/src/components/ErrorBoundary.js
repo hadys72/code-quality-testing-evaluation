@@ -1,55 +1,53 @@
-import React from 'react'
+// packages/frontend/src/components/ErrorBoundary.js
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class ErrorBoundary extends React.Component {
+/**
+ * Composant ErrorBoundary :
+ * Permet d'éviter qu'une erreur JavaScript dans un composant enfant
+ * ne fasse planter toute l'application.
+ */
+export default class ErrorBoundary extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = { hasError: false, error: null }
+    super(props);
+    this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error }
+  // Si une erreur est capturée, on met à jour l'état
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.log('Error caught:', error, errorInfo)
+  // Optionnel : permet de logguer l'erreur
+  componentDidCatch(error, info) {
+    // Tu peux envoyer l'erreur à un service externe si besoin
+    console.error('ErrorBoundary caught an error:', error, info);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          padding: '20px',
-          margin: '20px',
-          border: '1px solid #ff0000',
-          borderRadius: '4px',
-          backgroundColor: '#ffebee'
-        }}>
-          <h2>Something went wrong!</h2>
-          <pre style={{
-            whiteSpace: 'pre-wrap',
-            color: '#ff0000'
-          }}>
-            {this.state.error && this.state.error.toString()}
-          </pre>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#f44336',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Reload Page
-          </button>
+        <div
+          style={{
+            backgroundColor: '#fee',
+            color: '#900',
+            padding: '20px',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          <h2>Something went wrong.</h2>
+          <p>Please refresh the page or try again later.</p>
         </div>
-      )
+      );
     }
 
-    return this.props.children
+    // Si pas d’erreur, on affiche les enfants normalement
+    return this.props.children;
   }
 }
 
-export default ErrorBoundary;
+// ✅ Validation des props
+ErrorBoundary.propTypes = {
+  children: PropTypes.node.isRequired,
+};
