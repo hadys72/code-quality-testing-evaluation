@@ -1,17 +1,24 @@
 {
-    "name": "code-quality-testing-evaluation",
-    "version": "1.0.0",
-    "private": true,
-    "workspaces": [
-        "packages/*"
-    ],
-    "scripts": {
-        "start": "concurrently \"npm run start --workspace=backend\" \"npm run start --workspace=frontend\"",
-        "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run start --workspace=frontend\"",
-        "test": "npm run test --workspaces --if-present",
-        "lint": "npm run lint --workspaces --if-present"
-    },
-    "devDependencies": {
-        "concurrently": "^8.2.2"
-    }
+  "name": "code-quality-testing-evaluation",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start --workspace=backend\" \"npm run start --workspace=frontend\"",
+    "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run start --workspace=frontend\"",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.6.2"
+  }
 }

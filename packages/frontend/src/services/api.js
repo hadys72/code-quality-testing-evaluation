@@ -6,7 +6,7 @@ export const loginUser = async (username, password) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, {
       username,
-      password
+      password,
     });
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -24,16 +24,18 @@ export const registerUser = async (userData) => {
 
 export async function getUsers() {
   const token = localStorage.getItem('token');
-  return axios.get(`${API_URL}/auth/users`, {
-    headers: { Authorization: `Bearer ${token}` }
-  }).then(response => response.data);
+  return axios
+    .get(`${API_URL}/auth/users`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => response.data);
 }
 
 export const getProducts = async () => {
   try {
     const token = localStorage.getItem('token');
     const response = await axios.get(`${API_URL}/products`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const products = response.data.data;
@@ -60,7 +62,7 @@ export const getProducts = async () => {
       processedProducts.push({
         ...product,
         isCheapest,
-        moreExpensiveCount
+        moreExpensiveCount,
       });
     }
 
@@ -74,7 +76,7 @@ export const getProducts = async () => {
 export const createProduct = async (productData) => {
   const token = localStorage.getItem('token');
   const response = await axios.post(`${API_URL}/products`, productData, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
 };

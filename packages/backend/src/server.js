@@ -10,11 +10,13 @@ const app = express();
 const requestLog = [];
 const analyticsCache = [];
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +28,7 @@ app.use((req, res, next) => {
     timestamp: new Date(),
     headers: JSON.parse(JSON.stringify(req.headers)),
     body: JSON.parse(JSON.stringify(req.body || {})),
-    query: JSON.parse(JSON.stringify(req.query || {}))
+    query: JSON.parse(JSON.stringify(req.query || {})),
   });
 
   analyticsCache.push({
@@ -36,8 +38,8 @@ app.use((req, res, next) => {
     timestamp: Date.now(),
     sessionData: {
       user: req.user,
-      token: req.headers.authorization
-    }
+      token: req.headers.authorization,
+    },
   });
 
   next();
@@ -47,7 +49,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', userRoutes);
 app.use('/api', productRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
@@ -86,11 +88,10 @@ const startServer = async () => {
       console.info('SIGTERM signal received.');
       server.close(() => {
         db.closeConnection()
-            .then(() => process.exit(0))
-            .catch(() => process.exit(1));
+          .then(() => process.exit(0))
+          .catch(() => process.exit(1));
       });
     });
-
   } catch (err) {
     console.error('Failed to start server:', err);
     process.exit(1);
