@@ -3,29 +3,40 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/frontend",
+    "packages/backend"
   ],
   "scripts": {
-    "start": "concurrently \"npm run start --workspace=backend\" \"npm run start --workspace=frontend\"",
-    "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run start --workspace=frontend\"",
-    "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "dev": "npm --workspaces run dev",
+    "build": "npm --workspaces run build",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "test": "npm --workspaces run test -- --watch=false",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,md,html,css}": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx}": [
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.28.5",
-    "@babel/preset-react": "^7.28.5",
-    "@eslint/js": "^9.39.2",
-    "concurrently": "^8.2.2",
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/preset-react": "^7.25.9",
+    "@eslint/js": "^9.0.0",
     "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-n": "^17.23.1",
-    "eslint-plugin-perfectionist": "^4.15.1",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-n": "^17.15.1",
+    "eslint-plugin-perfectionist": "^3.9.1",
+    "eslint-plugin-react": "^7.37.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-unicorn": "^62.0.0",
-    "globals": "^16.5.0",
-    "prettier": "^3.6.2"
+    "globals": "^15.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.7.4"
   }
 }
