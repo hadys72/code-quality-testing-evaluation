@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 // packages/frontend/src/pages/Login.js
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { loginUser } from '../services/api';
 
 /**

@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 // packages/frontend/src/components/Navigation.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { logout } from '../services/api';
-import PropTypes from 'prop-types';
 
 const Navigation = ({ onLogout }) => {
   const navigate = useNavigate();
