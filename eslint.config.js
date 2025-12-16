@@ -1,19 +1,19 @@
-const js = require('@eslint/js')
-const globals = require('globals')
+const js = require('@eslint/js');
+const globals = require('globals');
 
-const perfectionist = require('eslint-plugin-perfectionist')
-const react = require('eslint-plugin-react')
-const reactHooks = require('eslint-plugin-react-hooks')
-const jsxA11y = require('eslint-plugin-jsx-a11y')
-const n = require('eslint-plugin-n')
-const unicorn = require('eslint-plugin-unicorn')
+const perfectionist = require('eslint-plugin-perfectionist');
+const react = require('eslint-plugin-react');
+const reactHooks = require('eslint-plugin-react-hooks');
+const jsxA11y = require('eslint-plugin-jsx-a11y');
+const n = require('eslint-plugin-n');
+const unicorn = require('eslint-plugin-unicorn');
 
-const prettier = require('eslint-config-prettier')
+const prettier = require('eslint-config-prettier');
 
 module.exports = [
   // Fichiers ignorés
   {
-    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/coverage/**']
+    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/coverage/**'],
   },
 
   // Règles JavaScript de base
@@ -23,8 +23,8 @@ module.exports = [
   {
     files: ['eslint.config.js'],
     languageOptions: {
-      globals: { ...globals.node }
-    }
+      globals: { ...globals.node },
+    },
   },
 
   // =====================
@@ -33,12 +33,12 @@ module.exports = [
   {
     files: ['packages/backend/**/*.js'],
     languageOptions: {
-      globals: { ...globals.node }
+      globals: { ...globals.node },
     },
     plugins: {
       n,
       unicorn,
-      perfectionist
+      perfectionist,
     },
     rules: {
       // Node
@@ -55,8 +55,8 @@ module.exports = [
       // Tri des imports
       'perfectionist/sort-imports': ['error', { type: 'natural', order: 'asc' }],
       'perfectionist/sort-named-imports': ['error', { order: 'asc' }],
-      'perfectionist/sort-exports': ['error', { order: 'asc' }]
-    }
+      'perfectionist/sort-exports': ['error', { order: 'asc' }],
+    },
   },
 
   // =====================
@@ -72,18 +72,18 @@ module.exports = [
         ecmaFeatures: { jsx: true },
         requireConfigFile: false,
         babelOptions: {
-          presets: ['@babel/preset-react']
-        }
-      }
+          presets: ['@babel/preset-react'],
+        },
+      },
     },
     plugins: {
       react,
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
-      perfectionist
+      perfectionist,
     },
     settings: {
-      react: { version: 'detect' }
+      react: { version: 'detect' },
     },
     rules: {
       // React
@@ -104,10 +104,10 @@ module.exports = [
       // Tri des imports
       'perfectionist/sort-imports': ['error', { type: 'natural', order: 'asc' }],
       'perfectionist/sort-named-imports': ['error', { order: 'asc' }],
-      'perfectionist/sort-exports': ['error', { order: 'asc' }]
-    }
+      'perfectionist/sort-exports': ['error', { order: 'asc' }],
+    },
   },
 
   // Compatibilité Prettier
-  prettier
-]
+  prettier,
+];
