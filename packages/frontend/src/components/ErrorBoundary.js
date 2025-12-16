@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 // packages/frontend/src/components/ErrorBoundary.js
 import React from 'react';
-import PropTypes from 'prop-types';
 
 /**
  * Composant ErrorBoundary :

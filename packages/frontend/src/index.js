@@ -1,14 +1,16 @@
 /* global process, module */
 // packages/frontend/src/index.js
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
 import _ from 'lodash';
 import moment from 'moment';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+import App from './App';
 import 'moment/locale/fr';
 import 'moment/locale/es';
 import 'moment/locale/de';
+
 import './styles/index.css';
 
 // Expose éventuel (debug)
