@@ -11,15 +11,21 @@ const unicorn = require('eslint-plugin-unicorn');
 const prettier = require('eslint-config-prettier');
 
 module.exports = [
+  // =====================
   // Fichiers ignorés
+  // =====================
   {
     ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/coverage/**'],
   },
 
+  // =====================
   // Règles JavaScript de base
+  // =====================
   js.configs.recommended,
 
-  // Configuration pour ce fichier (Node.js)
+  // =====================
+  // Configuration pour ESLint lui-même
+  // =====================
   {
     files: ['eslint.config.js'],
     languageOptions: {
@@ -33,7 +39,12 @@ module.exports = [
   {
     files: ['packages/backend/**/*.js'],
     languageOptions: {
-      globals: { ...globals.node },
+      globals: {
+        ...globals.node,
+      },
+      parserOptions: {
+        sourceType: 'commonjs',
+      },
     },
     plugins: {
       n,
@@ -60,16 +71,33 @@ module.exports = [
   },
 
   // =====================
+  // Backend Tests (Jest)
+  // =====================
+  {
+    files: ['packages/backend/**/__tests__/**/*.js', 'packages/backend/**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
+  },
+
+  // =====================
   // Frontend (React)
   // =====================
   {
     files: ['packages/frontend/**/*.js'],
     languageOptions: {
-      globals: { ...globals.browser },
+      globals: {
+        ...globals.browser,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        ecmaFeatures: { jsx: true },
+        ecmaFeatures: {
+          jsx: true,
+        },
         requireConfigFile: false,
         babelOptions: {
           presets: ['@babel/preset-react'],
@@ -83,7 +111,9 @@ module.exports = [
       perfectionist,
     },
     settings: {
-      react: { version: 'detect' },
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
       // React
@@ -94,11 +124,11 @@ module.exports = [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      // Accessibilité (base)
+      // Accessibilité
       'jsx-a11y/alt-text': 'warn',
       'jsx-a11y/anchor-is-valid': 'warn',
 
-      // IMPORTANT : pas de no-unused-vars en frontend
+      // Pas de no-unused-vars en frontend (géré par tooling)
       'no-unused-vars': 'off',
 
       // Tri des imports
@@ -108,6 +138,8 @@ module.exports = [
     },
   },
 
+  // =====================
   // Compatibilité Prettier
+  // =====================
   prettier,
 ];
