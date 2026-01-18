@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "jest --config jest.config.cjs",
+    "test:coverage": "jest --config jest.config.cjs --coverage"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -19,24 +19,6 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "supertest": "^7.0.0"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/__tests__/**/*.test.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/db/migrations/**"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 80,
-        "branches": 60,
-        "functions": 70,
-        "lines": 80
-      }
-    }
+    "supertest": "^7.2.2"
   }
 }

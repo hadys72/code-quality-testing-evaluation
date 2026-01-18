@@ -12,24 +12,27 @@ const prettier = require('eslint-config-prettier');
 
 module.exports = [
   // =====================
-  // Fichiers ignorés
+  // Ignored files
   // =====================
   {
     ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/coverage/**'],
   },
 
   // =====================
-  // Règles JavaScript de base
+  // Base JS rules
   // =====================
   js.configs.recommended,
 
   // =====================
-  // Configuration pour ESLint lui-même
+  // ESLint config file (this file)
   // =====================
   {
     files: ['eslint.config.js'],
     languageOptions: {
-      globals: { ...globals.node },
+      globals: globals.node,
+      parserOptions: {
+        sourceType: 'commonjs',
+      },
     },
   },
 
@@ -39,9 +42,7 @@ module.exports = [
   {
     files: ['packages/backend/**/*.js'],
     languageOptions: {
-      globals: {
-        ...globals.node,
-      },
+      globals: globals.node,
       parserOptions: {
         sourceType: 'commonjs',
       },
@@ -52,18 +53,16 @@ module.exports = [
       perfectionist,
     },
     rules: {
-      // Node
+      // Ces règles cassent souvent sur Jest/monorepo -> on les coupe
+      'n/no-missing-require': 'off',
       'n/no-missing-import': 'off',
-      'n/no-process-exit': 'off',
 
-      // Unicorn (assoupli)
+      'n/no-process-exit': 'off',
       'unicorn/prefer-module': 'off',
       'unicorn/no-null': 'off',
 
-      // Variables non utilisées (_next autorisé)
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
 
-      // Tri des imports
       'perfectionist/sort-imports': ['error', { type: 'natural', order: 'asc' }],
       'perfectionist/sort-named-imports': ['error', { order: 'asc' }],
       'perfectionist/sort-exports': ['error', { order: 'asc' }],
@@ -71,15 +70,29 @@ module.exports = [
   },
 
   // =====================
-  // Backend Tests (Jest)
+  // Backend tests (Jest)
   // =====================
   {
-    files: ['packages/backend/**/__tests__/**/*.js', 'packages/backend/**/*.test.js'],
+    files: [
+      // Ton repo montre packages/backend/__tests__/...
+      'packages/backend/__tests__/**/*.js',
+      // Et au cas où tu ajoutes des tests ailleurs
+      'packages/backend/**/*.test.js',
+      'packages/backend/**/*.spec.js',
+    ],
     languageOptions: {
       globals: {
         ...globals.node,
         ...globals.jest,
       },
+      parserOptions: {
+        sourceType: 'commonjs',
+      },
+    },
+    rules: {
+      // Sécurité: ces règles cassent souvent sur les chemins de tests/mocks
+      'n/no-missing-require': 'off',
+      'n/no-missing-import': 'off',
     },
   },
 
@@ -87,21 +100,13 @@ module.exports = [
   // Frontend (React)
   // =====================
   {
-    files: ['packages/frontend/**/*.js'],
+    files: ['packages/frontend/**/*.{js,jsx}'],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
+      globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-        requireConfigFile: false,
-        babelOptions: {
-          presets: ['@babel/preset-react'],
-        },
+        ecmaFeatures: { jsx: true },
       },
     },
     plugins: {
@@ -111,27 +116,21 @@ module.exports = [
       perfectionist,
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
+      react: { version: 'detect' },
     },
     rules: {
-      // React
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
 
-      // Hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      // Accessibilité
       'jsx-a11y/alt-text': 'warn',
       'jsx-a11y/anchor-is-valid': 'warn',
 
-      // Pas de no-unused-vars en frontend (géré par tooling)
+      // React a déjà ses règles; évite le double-signalement
       'no-unused-vars': 'off',
 
-      // Tri des imports
       'perfectionist/sort-imports': ['error', { type: 'natural', order: 'asc' }],
       'perfectionist/sort-named-imports': ['error', { order: 'asc' }],
       'perfectionist/sort-exports': ['error', { order: 'asc' }],
@@ -139,7 +138,32 @@ module.exports = [
   },
 
   // =====================
-  // Compatibilité Prettier
+  // Frontend tests & mocks (Jest)
+  // =====================
+  {
+    files: [
+      'packages/frontend/__tests__/**/*.{js,jsx}',
+      'packages/frontend/**/__tests__/**/*.{js,jsx}',
+      'packages/frontend/**/__mocks__/**/*.js',
+      'packages/frontend/src/setupTests.js',
+      'packages/frontend/**/*.test.{js,jsx}',
+      'packages/frontend/**/*.spec.{js,jsx}',
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+
+  // =====================
+  // Prettier compatibility
   // =====================
   prettier,
 ];

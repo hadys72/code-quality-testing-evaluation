@@ -111,3 +111,4 @@ if (require.main === module) {
 
 // Export pour Supertest / Jest
 module.exports = app;
+module.exports.startServer = startServer;
