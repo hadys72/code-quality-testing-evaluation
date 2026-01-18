@@ -1,20 +1,26 @@
+# Dependencies
 node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Lighthouse CI reports
+.lighthouseci/
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-dist/
-build/
-coverage/
-
-.env
-.env.local
-.env.*.local
-
-.vscode/
-
-.DS_Store
-Thumbs.db
-
 logs/
 *.log
+
+# IDE / Editor
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
