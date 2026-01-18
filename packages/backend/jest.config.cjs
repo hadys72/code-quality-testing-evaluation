@@ -4,11 +4,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.js'],
 
   collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.js',
-    '!src/**/index.js',
-    '!src/db/migrations/**',
-  ],
+  collectCoverageFrom: ['src/**/*.js', '!src/**/index.js', '!src/db/migrations/**'],
 
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
@@ -21,4 +17,4 @@ module.exports = {
       lines: 80,
     },
   },
-}
+};

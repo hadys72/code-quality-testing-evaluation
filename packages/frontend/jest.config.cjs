@@ -3,11 +3,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.js', '**/?(*.)+(spec|test).js'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
-    '!src/main.jsx',
-    '!src/index.jsx',
-  ],
+  collectCoverageFrom: ['src/**/*.{js,jsx}', '!src/main.jsx', '!src/index.jsx'],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
   moduleNameMapper: {
@@ -24,4 +20,4 @@ module.exports = {
       lines: 80,
     },
   },
-}
+};
