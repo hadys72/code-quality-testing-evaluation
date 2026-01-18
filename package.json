@@ -9,10 +9,14 @@
   "scripts": {
     "dev": "npm --workspaces run dev",
     "build": "npm --workspaces run build",
+    "build:frontend": "npm --workspace packages/frontend run build",
     "lint": "eslint .",
     "format": "prettier . --write",
     "test": "npm --workspaces run test -- --watch=false",
     "test:coverage": "npm --workspaces run test:coverage",
+    "lhci": "npm run build:frontend && lhci autorun --config=./.lighthouserc.json",
+    "lhci:collect": "npm run build:frontend && lhci collect --config=./.lighthouserc.json",
+    "lhci:assert": "lhci assert --config=./.lighthouserc.json",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -25,17 +29,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
+    "@lhci/cli": "^0.15.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jsx-a11y": "^6.9.0",
-    "eslint-plugin-n": "^17.15.1",
-    "eslint-plugin-perfectionist": "^3.9.1",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-n": "^17.15.1",
     "eslint-plugin-unicorn": "^51.0.1",
+    "eslint-plugin-perfectionist": "^3.9.1",
     "globals": "^15.12.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "serve": "^14.2.5"
   }
 }
