@@ -46,19 +46,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes setup
+// Routes
 app.use('/api/auth', userRoutes);
 app.use('/api', productRoutes);
 
+// Error handler
 app.use((err, req, res, _next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
 
+// 404
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
+// Global errors
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
   process.exit(1);
@@ -71,7 +74,9 @@ process.on('unhandledRejection', (err) => {
 
 const port = process.env.PORT || 3001;
 
-// Start server only after the database is connected
+// ==========================
+// Server start (PROD / DEV)
+// ==========================
 const startServer = async () => {
   try {
     await db.connect();
@@ -99,6 +104,11 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// ⚠️ IMPORTANT : ne démarre le serveur QUE si ce fichier est lancé directement
+if (require.main === module) {
+  startServer();
+}
 
+// Export pour Supertest / Jest
 module.exports = app;
+module.exports.startServer = startServer;
